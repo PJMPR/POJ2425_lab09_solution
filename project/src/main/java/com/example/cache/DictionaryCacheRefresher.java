@@ -7,21 +7,25 @@ public class DictionaryCacheRefresher extends Thread {
 
     public void run() {
         while (true) {
-            DictionaryCache
-                    .getInstance()
-                    .setItems(
-                            new DictionaryFileReader("src/main/resources/dictionaries.csv")
-                                    .getDictionaryValues());
-            System.out.println("Dictionary cache refreshed");
-            for (DictionaryValue dictionaryValue : DictionaryCache.getInstance().getItems()) {
-                System.out.println(dictionaryValue);
-            }
+            reloadCache();
             stopFor(10000);
         }
 
     }
 
-    private static void stopFor(long miliseconds) {
+    private void reloadCache() {
+        DictionaryCache
+                .getInstance()
+                .setItems(
+                        new DictionaryFileReader("src/main/resources/dictionaries.csv")
+                                .getDictionaryValues());
+        System.out.println("Dictionary cache refreshed");
+        for (DictionaryValue dictionaryValue : DictionaryCache.getInstance().getItems()) {
+            System.out.println(dictionaryValue);
+        }
+    }
+
+    private void stopFor(long miliseconds) {
         try {
             Thread.sleep(miliseconds);
         } catch (InterruptedException e) {
